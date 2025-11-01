@@ -76,15 +76,15 @@ p <- ggplot() +
 
 plot(p)
 
-dir.create(paste0(work_directory, 
+dir.create(file.path(work_directory, 
                   "paper_plots/data/"), recursive = TRUE)
-plot_path <- paste0(work_directory, 
-                    "paper_plots/data/91_",batch_name, "_overall_significance.pdf")
+plot_path <- file.path(work_directory, 
+                    "paper_plots", "data", paste0("91_",batch_name, "_overall_significance.pdf"))
 ggsave(filename = plot_path, plot = p, width = 9, height = 6*9/8, bg = "transparent")
 
-dir.create(paste0(work_directory, 
+dir.create(file.path(work_directory, 
                   "yao_2023/report/"), recursive = TRUE)
-plot_path <- paste0(work_directory, 
-                    "yao_2023/report/91_",batch_name, "_overall_significance.pdf")
+plot_path <- file.path(work_directory, 
+                    "yao_2023", "report", paste0("91_",batch_name, "_overall_significance.pdf"))
 ggsave(filename = plot_path, plot = p, width = 9, height = 6*9/8, bg = "transparent")
 

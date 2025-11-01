@@ -75,7 +75,7 @@ p <- ggplot() +
 
 plot(p)
 
-dir.create(here(work_directory, "paper_plots/data/"), 
+dir.create(file.path(work_directory, "paper_plots", "data"), 
            recursive = TRUE)
 ggsave(p, file = here(work_directory, "paper_plots/data/A3_chen_convergence.pdf"),
        width = 9, height = 6*9/8, bg = "transparent")

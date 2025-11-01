@@ -1,11 +1,11 @@
 ---
-title: "reproduce_results"
+title: "Analysis pipeline of applying XConTest to Yao 2023"
 author: "Tianyu Zhang, Ergan Shang and Kathryn Roeder"
 format: html
 editor: visual
 ---
 
-```{r}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 library(here)
 library(glue)
 library(data.table)
@@ -15,31 +15,63 @@ library(doParallel)
 library(foreach)
 library(highmean)
 library(scales)
-
+library(dplyr)
+library(Seurat)
+library(patchwork)
 
 work_directory <- here::here()
-print(work_directory)
+code_directory <- paste0(work_directory, '/yao_2023/code/')
+code_directory |> print()
 ```
+## Data preprocessing
+
+The original data can be downloaded from [GEO](https://www-ncbi-nlm-nih-gov.proxy.library.ucsb.edu/geo/query/acc.cgi?acc=GSM6858447). 
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '01_subsetting_genes.R'),
+       local = TRUE)
+source(file.path(code_directory, '02_remove_cell_cycle.R'),
+       local = TRUE)
+source(file.path(code_directory, '03_structure_residuals.R'),
+       local = TRUE)
+source(file.path(code_directory, '04_subsetting_perturbation.R'),
+       local = TRUE)
+```
+
+## Establishing the gene modules using `CSCORE`
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '31_establish_clustering.R'),
+       local = TRUE)
+```
+
+### Perform GO analysis to each gene module
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '32_GO_analysis.R'),
+       local = TRUE)
+```
+
 ## Results of XConTest
 
 ### Apply aggregated XConTest to all perturbations. Probably want to run this on a cluster.
 
 ```{r, eval = FALSE}
-system2("Rscript", file.path(work_directory, "yao_2023/code/51_systematic_process_all_in_paper_cluster.R"))
-system2("Rscript", file.path(work_directory, "yao_2023/code/52_process_results_cluster.R"))
+system2("Rscript", file.path(code_directory, "51_systematic_process_all_in_paper_cluster.R"))
+system2("Rscript", file.path(code_directory, "52_process_results_cluster.R"))
 ```
 
-### 
+### Create igraph for each module.
 
-```{r}
-source(file.path(work_directory, '/yao_2023/code/54_graph_visualization.R'),
+```{r, eval = FALSE}
+source(file.path(code_directory, '54_graph_visualization.R'),
        local = TRUE)
 ```
 
 ### Create the convergence plot for XConTest
 
 ```{r}
-source(file.path(work_directory, '/yao_2023/code/91_overall_convergence_and_number_module.R'),
+source(file.path(code_directory, '91_overall_convergence_and_number_module.R'),
        local = TRUE)
 ```
 
@@ -48,14 +80,14 @@ source(file.path(work_directory, '/yao_2023/code/91_overall_convergence_and_numb
 ### Apply Dset to all perturbations and all modules. Probably want to run this on a cluster.
 
 ```{r, eval = FALSE}
-system2("Rscript", file.path(work_directory, "yao_2023/code/A1_chen_method.R"))
-system2("Rscript", file.path(work_directory, "yao_2023/code/A2_process_result.R"))
+system2("Rscript", file.path(code_directory, "A1_chen_method.R"))
+system2("Rscript", file.path(code_directory, "A2_process_result.R"))
 ```
 
 ### Create the convergence plot for Dset
 
 ```{r}
-source(file.path(work_directory, '/yao_2023/code/A3_chen_convergence_and_number_module.R'),
+source(file.path(code_directory, 'A3_chen_convergence_and_number_module.R'),
        local = TRUE)
 ```
 
@@ -68,18 +100,20 @@ source(file.path(work_directory, 'R/collect_and_structure_results.R'))
 ### Examine perturbation pairs with more convergent modules
 
 ```{r}
-source(file.path(work_directory, '/yao_2023/code/B1_collect_many_module_converge.R'),
+source(file.path(code_directory, 'B1_collect_many_module_converge.R'),
        local = TRUE)
 ```
 ### Create igraph for perturbations with $\geq 3$ convergent modules.
 
 ```{r}
-source(file.path(work_directory, '/yao_2023/code/B2_create_perturbation_igraph.R'),
+source(file.path(code_directory, 'B2_create_perturbation_igraph.R'),
        local = TRUE)
 ```
 ### Examine selected perturbation pairs
 
 ```{r}
-source(file.path(work_directory, '/yao_2023/code/B3_venn_diagram.R'),
+source(file.path(code_directory, 'B3_venn_diagram.R'),
        local = TRUE)
 ```
+
+

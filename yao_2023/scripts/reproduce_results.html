@@ -8,7 +8,7 @@
 
 <meta name="author" content="Tianyu Zhang, Ergan Shang and Kathryn Roeder">
 
-<title>reproduce_results</title>
+<title>Analysis pipeline of applying XConTest to Yao 2023</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -111,7 +111,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">reproduce_results</h1>
+<h1 class="title">Analysis pipeline of applying XConTest to Yao 2023</h1>
 </div>
 
 
@@ -135,88 +135,74 @@ window.Quarto = {
 
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/tianyuzhang/Documents/genetic_convergence_SA</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'igraph'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    decompose, spectrum</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:base':
-
-    union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: foreach</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: iterators</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: parallel</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreach)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(highmean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: mvtnorm</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>work_directory <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>()</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(work_directory)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/Users/tianyuzhang/Documents/genetic_convergence_SA"</code></pre>
+<pre><code>[1] "/Users/tianyuzhang/Documents/genetic_convergence_SA/yao_2023/code/"</code></pre>
 </div>
 </div>
+<section id="data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preprocessing">Data preprocessing</h2>
+<p>The original data can be downloaded from <a href="https://www-ncbi-nlm-nih-gov.proxy.library.ucsb.edu/geo/query/acc.cgi?acc=GSM6858447">GEO</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'01_subsetting_genes.R'</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'02_remove_cell_cycle.R'</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'03_structure_residuals.R'</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'04_subsetting_perturbation.R'</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="establishing-the-gene-modules-using-cscore" class="level2">
+<h2 class="anchored" data-anchor-id="establishing-the-gene-modules-using-cscore">Establishing the gene modules using <code>CSCORE</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'31_establish_clustering.R'</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="perform-go-analysis-to-each-gene-module" class="level3">
+<h3 class="anchored" data-anchor-id="perform-go-analysis-to-each-gene-module">Perform GO analysis to each gene module</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'32_GO_analysis.R'</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
 <section id="results-of-xcontest" class="level2">
 <h2 class="anchored" data-anchor-id="results-of-xcontest">Results of XConTest</h2>
 <section id="apply-aggregated-xcontest-to-all-perturbations.-probably-want-to-run-this-on-a-cluster." class="level3">
 <h3 class="anchored" data-anchor-id="apply-aggregated-xcontest-to-all-perturbations.-probably-want-to-run-this-on-a-cluster.">Apply aggregated XConTest to all perturbations. Probably want to run this on a cluster.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(work_directory, <span class="st">"yao_2023/code/51_systematic_process_all_in_paper_cluster.R"</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(work_directory, <span class="st">"yao_2023/code/52_process_results_cluster.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"51_systematic_process_all_in_paper_cluster.R"</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"52_process_results_cluster.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
+<section id="create-igraph-for-each-module." class="level3">
+<h3 class="anchored" data-anchor-id="create-igraph-for-each-module.">Create igraph for each module.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'/yao_2023/code/54_graph_visualization.R'</span>),</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'54_graph_visualization.R'</span>),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="create-the-convergence-plot-for-xcontest" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-convergence-plot-for-xcontest">Create the convergence plot for XConTest</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'/yao_2023/code/91_overall_convergence_and_number_module.R'</span>),</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'91_overall_convergence_and_number_module.R'</span>),</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="reproduce_results_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="reproduce_results_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in dir.create(paste0(work_directory, "paper_plots/data/"), recursive =
-TRUE): '/Users/tianyuzhang/Documents/genetic_convergence_SApaper_plots/data'
+<pre><code>Warning in dir.create(file.path(work_directory, "paper_plots/data/"), recursive
+= TRUE): '/Users/tianyuzhang/Documents/genetic_convergence_SA/paper_plots/data'
 already exists</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in dir.create(paste0(work_directory, "yao_2023/report/"), recursive =
-TRUE): '/Users/tianyuzhang/Documents/genetic_convergence_SAyao_2023/report'
+<pre><code>Warning in dir.create(file.path(work_directory, "yao_2023/report/"), recursive
+= TRUE): '/Users/tianyuzhang/Documents/genetic_convergence_SA/yao_2023/report'
 already exists</code></pre>
 </div>
 </div>
@@ -227,26 +213,26 @@ already exists</code></pre>
 <section id="apply-dset-to-all-perturbations-and-all-modules.-probably-want-to-run-this-on-a-cluster." class="level3">
 <h3 class="anchored" data-anchor-id="apply-dset-to-all-perturbations-and-all-modules.-probably-want-to-run-this-on-a-cluster.">Apply Dset to all perturbations and all modules. Probably want to run this on a cluster.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(work_directory, <span class="st">"yao_2023/code/A1_chen_method.R"</span>))</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(work_directory, <span class="st">"yao_2023/code/A2_process_result.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"A1_chen_method.R"</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"A2_process_result.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="create-the-convergence-plot-for-dset" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-convergence-plot-for-dset">Create the convergence plot for Dset</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'/yao_2023/code/A3_chen_convergence_and_number_module.R'</span>),</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'A3_chen_convergence_and_number_module.R'</span>),</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="reproduce_results_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="reproduce_results_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in dir.create(here(work_directory, "paper_plots/data/"), recursive =
-TRUE): '/Users/tianyuzhang/Documents/genetic_convergence_SA/paper_plots/data'
-already exists</code></pre>
+<pre><code>Warning in dir.create(file.path(work_directory, "paper_plots", "data"), :
+'/Users/tianyuzhang/Documents/genetic_convergence_SA/paper_plots/data' already
+exists</code></pre>
 </div>
 </div>
 </section>
@@ -254,13 +240,13 @@ already exists</code></pre>
 <section id="perturbation-pairs-of-more-interest" class="level2">
 <h2 class="anchored" data-anchor-id="perturbation-pairs-of-more-interest">Perturbation pairs of more interest</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'R/collect_and_structure_results.R'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'R/collect_and_structure_results.R'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="examine-perturbation-pairs-with-more-convergent-modules" class="level3">
 <h3 class="anchored" data-anchor-id="examine-perturbation-pairs-with-more-convergent-modules">Examine perturbation pairs with more convergent modules</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'/yao_2023/code/B1_collect_many_module_converge.R'</span>),</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B1_collect_many_module_converge.R'</span>),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in dir.create(paste0(work_directory,
 "/yao_2023/report/B1_interesting_pairs/")):
@@ -272,12 +258,12 @@ already exists</code></pre>
 <section id="create-igraph-for-perturbations-with-geq-3-convergent-modules." class="level3">
 <h3 class="anchored" data-anchor-id="create-igraph-for-perturbations-with-geq-3-convergent-modules.">Create igraph for perturbations with <span class="math inline">\(\geq 3\)</span> convergent modules.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'/yao_2023/code/B2_create_perturbation_igraph.R'</span>),</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B2_create_perturbation_igraph.R'</span>),</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH bde58fe UNW- 18 31 -- 
+<pre><code>IGRAPH 71049ab UNW- 18 31 -- 
 + attr: name (v/c), weight (e/n)
-+ edges from bde58fe (vertex names):
++ edges from 71049ab (vertex names):
  [1] AHR      --RELA      ATXN7L3  --XPR1      CSNK1A1  --HSP90B1  
  [4] CSNK1A1  --IRAK4     CSNK1A1  --KIDINS220 CSNK1A1  --MEF2C    
  [7] HSP90B1  --IRAK4     HSP90B1  --TRAF6     HSP90B1  --RELA     
@@ -301,8 +287,8 @@ already exists</code></pre>
 <section id="examine-selected-perturbation-pairs" class="level3">
 <h3 class="anchored" data-anchor-id="examine-selected-perturbation-pairs">Examine selected perturbation pairs</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'/yao_2023/code/B3_venn_diagram.R'</span>),</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B3_venn_diagram.R'</span>),</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         comparison      p_value         active_group   gene1   gene2
              &lt;char&gt;        &lt;num&gt;               &lt;char&gt;  &lt;char&gt;  &lt;char&gt;
