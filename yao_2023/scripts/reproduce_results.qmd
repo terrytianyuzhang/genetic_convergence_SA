@@ -6,6 +6,10 @@ editor: visual
 ---
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(ggpubr)
+library(grid)
+library(ggnewscale)
+library(readxl)
 library(here)
 library(glue)
 library(data.table)
@@ -20,12 +24,13 @@ library(Seurat)
 library(patchwork)
 
 work_directory <- here::here()
-code_directory <- paste0(work_directory, '/yao_2023/code/')
+code_directory <- paste0(work_directory, '/yao_2023/code')
 code_directory |> print()
 ```
+
 ## Data preprocessing
 
-The original data can be downloaded from [GEO](https://www-ncbi-nlm-nih-gov.proxy.library.ucsb.edu/geo/query/acc.cgi?acc=GSM6858447). 
+The original data can be downloaded from [GEO](https://www-ncbi-nlm-nih-gov.proxy.library.ucsb.edu/geo/query/acc.cgi?acc=GSM6858447).
 
 ```{r, eval = FALSE}
 source(file.path(code_directory, '01_subsetting_genes.R'),
@@ -75,6 +80,13 @@ source(file.path(code_directory, '91_overall_convergence_and_number_module.R'),
        local = TRUE)
 ```
 
+### Create the scLinker Plot by XConTest
+
+```{r}
+source(file.path(code_directory, 'C1_scLinker.R'),
+       local = TRUE)
+```
+
 ## Results of Dset
 
 ### Apply Dset to all perturbations and all modules. Probably want to run this on a cluster.
@@ -103,17 +115,17 @@ source(file.path(work_directory, 'R/collect_and_structure_results.R'))
 source(file.path(code_directory, 'B1_collect_many_module_converge.R'),
        local = TRUE)
 ```
+
 ### Create igraph for perturbations with $\geq 3$ convergent modules.
 
 ```{r}
 source(file.path(code_directory, 'B2_create_perturbation_igraph.R'),
        local = TRUE)
 ```
+
 ### Examine selected perturbation pairs
 
 ```{r}
 source(file.path(code_directory, 'B3_venn_diagram.R'),
        local = TRUE)
 ```
-
-
