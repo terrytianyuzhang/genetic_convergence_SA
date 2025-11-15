@@ -1,0 +1,54 @@
+---
+title: "Analysis pipeline of applying XConTest for Simulation Study"
+author: "Tianyu Zhang, Ergan Shang and Kathryn Roeder"
+format: html
+editor: visual
+---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(ggplot2)
+library(ggpubr)
+library(tidyverse)
+library(parallel)
+library(data.table)
+library(HMC)
+
+work_directory <- here::here()
+code_directory <- paste0(work_directory, '/simulation/code')
+code_directory |> print()
+```
+
+### Create the Heatmap
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '01_poisson_eff.R'),
+       local = TRUE)
+```
+
+### Perform XConTest Analysis on Artificial Perturbation Data
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '02_test_raw_count_1se_200_400_standardize.R'),
+       local = TRUE)
+```
+
+### Create the Results of XConTest
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '03_draw_test_raw_count_1se_200_400_standardize.R'),
+       local = TRUE)
+```
+
+### Perform Dset Analysis on Artificial Perturbation Data
+
+```{r, eval = FALSE}
+source(file.path(code_directory, '04_bm_Chen.R'),
+       local = TRUE)
+```
+
+### Create the All Simulation Results
+
+```{r, eval = FALSE}
+source(file.path(code_directory, 'plot_for_paper_sim.R'),
+       local = TRUE)
+```
