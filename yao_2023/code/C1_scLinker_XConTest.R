@@ -1,4 +1,4 @@
-plot_path<-file.path(work_directory, 'yao_2023', 'report', 'C1_scLinker')
+plot_path<-file.path(work_directory, 'yao_2023', 'report', 'C1_scLinker_XConTest')
 dir.create(plot_path, recursive = TRUE)
 
 conv_path<-file.path(work_directory, 'yao_2023', 'data')
