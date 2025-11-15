@@ -1,0 +1,35 @@
+---
+title: "Analysis pipeline of applying XConTest for Simulation Study"
+author: "Tianyu Zhang, Ergan Shang and Kathryn Roeder"
+format: html
+editor: visual
+---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(ggplot2)
+library(ggpubr)
+library(ggnewscale)
+library(PMA)
+library(dplyr)
+library(irlba)
+library(scRNAseq)
+library(glmnet)
+library(ggupset)
+library(enrichplot)
+library(clusterProfiler)
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+library(msigdbr)
+
+work_directory <- here::here()
+code_directory <- paste0(work_directory, '/lalli/code')
+code_directory |> print()
+```
+
+
+### Create the XConTest Results on Lalli's data
+
+```{r, eval = FALSE}
+source(file.path(code_directory, 'plot_for_paper_lalli.R'),
+       local = TRUE)
+```
