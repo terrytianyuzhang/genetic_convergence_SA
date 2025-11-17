@@ -302,7 +302,6 @@ active_gene_num<-5
 count_method<-'intersect'
 
 p1<-amazing_scatterplot_asym(all_names, data_path, store_path, png_name, scale, grouping_vector, active_gene_num, count_method)
-print(p1)
 ggsave(paste0(plot_path, "/artificial_NT_3_color_raw_grlasso_1se_200_400_intersect.pdf"), p1, width = 5.5, height = 4)
 
 
