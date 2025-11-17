@@ -210,13 +210,8 @@ already exists</code></pre>
 <section id="create-the-sclinker-plot-by-xcontest" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-sclinker-plot-by-xcontest">Create the scLinker Plot by XConTest</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'C1_scLinker.R'</span>),</span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'C1_scLinker_XConTest.R'</span>),</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in dir.create(plot_path, recursive = TRUE):
-'/Users/tianyuzhang/Documents/genetic_convergence_SA/yao_2023/report/C1_scLinker'
-already exists</code></pre>
-</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>New names:
 • `` -&gt; `...2`
@@ -298,15 +293,15 @@ already exists</code></pre>
 <section id="apply-dset-to-all-perturbations-and-all-modules.-probably-want-to-run-this-on-a-cluster." class="level3">
 <h3 class="anchored" data-anchor-id="apply-dset-to-all-perturbations-and-all-modules.-probably-want-to-run-this-on-a-cluster.">Apply Dset to all perturbations and all modules. Probably want to run this on a cluster.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"A1_chen_method.R"</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"A2_process_result.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"A1_chen_method.R"</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system2</span>(<span class="st">"Rscript"</span>, <span class="fu">file.path</span>(code_directory, <span class="st">"A2_process_result.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="create-the-convergence-plot-for-dset" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-convergence-plot-for-dset">Create the convergence plot for Dset</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'A3_chen_convergence_and_number_module.R'</span>),</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'A3_chen_convergence_and_number_module.R'</span>),</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -325,13 +320,13 @@ exists</code></pre>
 <section id="perturbation-pairs-of-more-interest" class="level2">
 <h2 class="anchored" data-anchor-id="perturbation-pairs-of-more-interest">Perturbation pairs of more interest</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'R/collect_and_structure_results.R'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(work_directory, <span class="st">'R/collect_and_structure_results.R'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="examine-perturbation-pairs-with-more-convergent-modules" class="level3">
 <h3 class="anchored" data-anchor-id="examine-perturbation-pairs-with-more-convergent-modules">Examine perturbation pairs with more convergent modules</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B1_collect_many_module_converge.R'</span>),</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B1_collect_many_module_converge.R'</span>),</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in dir.create(paste0(work_directory,
 "/yao_2023/report/B1_interesting_pairs/")):
@@ -343,12 +338,12 @@ already exists</code></pre>
 <section id="create-igraph-for-perturbations-with-geq-3-convergent-modules." class="level3">
 <h3 class="anchored" data-anchor-id="create-igraph-for-perturbations-with-geq-3-convergent-modules.">Create igraph for perturbations with <span class="math inline">\(\geq 3\)</span> convergent modules.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B2_create_perturbation_igraph.R'</span>),</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B2_create_perturbation_igraph.R'</span>),</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 9496517 UNW- 18 31 -- 
+<pre><code>IGRAPH b599058 UNW- 18 31 -- 
 + attr: name (v/c), weight (e/n)
-+ edges from 9496517 (vertex names):
++ edges from b599058 (vertex names):
  [1] AHR      --RELA      ATXN7L3  --XPR1      CSNK1A1  --HSP90B1  
  [4] CSNK1A1  --IRAK4     CSNK1A1  --KIDINS220 CSNK1A1  --MEF2C    
  [7] HSP90B1  --IRAK4     HSP90B1  --TRAF6     HSP90B1  --RELA     
@@ -372,8 +367,8 @@ already exists</code></pre>
 <section id="examine-selected-perturbation-pairs" class="level3">
 <h3 class="anchored" data-anchor-id="examine-selected-perturbation-pairs">Examine selected perturbation pairs</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B3_venn_diagram.R'</span>),</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'B3_venn_diagram.R'</span>),</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         comparison      p_value         active_group   gene1   gene2
              &lt;char&gt;        &lt;num&gt;               &lt;char&gt;  &lt;char&gt;  &lt;char&gt;
@@ -392,6 +387,20 @@ already exists</code></pre>
 5:  TYK2_vs_STAT1 1.583814e-13           31   TYK2  STAT1
 6:  TYK2_vs_STAT2 1.323856e-30         6/31   TYK2  STAT2</code></pre>
 </div>
+</div>
+</section>
+<section id="create-the-sclinker-plot-by-dset" class="level3">
+<h3 class="anchored" data-anchor-id="create-the-sclinker-plot-by-dset">Create the scLinker Plot by Dset</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'C2_scLinker_Dset.R'</span>),</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-the-loeuf-plot" class="level3">
+<h3 class="anchored" data-anchor-id="create-the-loeuf-plot">Create the LOEUF Plot</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">file.path</span>(code_directory, <span class="st">'C3_hist_LOEUF.R'</span>),</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">local =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
