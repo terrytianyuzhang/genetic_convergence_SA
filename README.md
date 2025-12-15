@@ -2,7 +2,7 @@
 
 ## Overview
 
-We developed XConTest, a cross-fitted convergence testing framework designed to evaluate the similarity of transcriptional impacts induced by genetic perturbations. The method is demonstrated using multiple Perturb-seq datasets.
+We developed XConTest, a cross-fitted convergence testing framework designed to evaluate the similarity of transcriptional impacts induced by genetic perturbations. The method is demonstrated using multiple Perturb-seq datasets. This repository is a submitted archive for initial submissions.
 
 ## Repository Structure
 
