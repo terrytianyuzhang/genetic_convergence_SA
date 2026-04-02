@@ -11,52 +11,43 @@ processed_results[, is_significant := is_significant + (p_value < threshold)]
 processed_results[, is_significant := is_significant + (p_value < threshold / 2450)]
 processed_results[, is_significant := factor(is_significant, levels = c(0, 1, 2))]
 
-parse_nums <- function(x) {
-  if (is.na(x) || trimws(x) == "") return(integer(0))
-  parts <- unlist(strsplit(x, "/", fixed = TRUE))
-  nums <- suppressWarnings(as.integer(trimws(parts)))
-  nums <- nums[!is.na(nums)]
-  unique(nums)
-}
-
-processed_results[, relevant_module := vapply(active_group, function(x) length(parse_nums(x)), integer(1))]
+processed_results[, relevant_module := 0L]
+valid_active_group <- !is.na(processed_results$active_group) & trimws(processed_results$active_group) != ""
+processed_results[valid_active_group,
+                  relevant_module := vapply(strsplit(active_group, "/", fixed = TRUE), function(x) {
+                    module_ids <- suppressWarnings(as.integer(trimws(x)))
+                    length(unique(module_ids[!is.na(module_ids)]))
+                  }, integer(1))]
 
 gene_levels <- sort(unique(c(processed_results$gene1, processed_results$gene2)))
 
-base_theme <- theme_minimal() +
+significance_plot <- ggplot(processed_results, aes(x = gene1, y = gene2, color = is_significant)) +
+  geom_point(size = 3, alpha = 0.7) +
+  scale_x_discrete(limits = gene_levels) +
+  scale_y_discrete(limits = gene_levels) +
+  scale_color_manual(
+    values = c("0" = "#EEEEEE", "1" = "#013e75", "2" = "#f5b70a"),
+    labels = c("Adj.p<0.05", "p<0.05", "p>0.05"),
+    breaks = c("2", "1", "0"),
+    name = "Convergence"
+  ) +
+  theme_minimal() +
   labs(x = "Gene 1", y = "Gene 2") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
-plot_directional_significance <- function(plot_dt) {
-  ggplot(plot_dt, aes(x = gene1, y = gene2, color = is_significant)) +
-    geom_point(size = 3, alpha = 0.7) +
-    scale_x_discrete(limits = gene_levels) +
-    scale_y_discrete(limits = rev(gene_levels)) +
-    scale_color_manual(
-      values = c("0" = "#EEEEEE", "1" = "#013e75", "2" = "#f5b70a"),
-      labels = c("Adj.p<0.05", "p<0.05", "p>0.05"),
-      breaks = c("2", "1", "0"),
-      name = "Convergence"
-    ) +
-    base_theme
-}
-
-plot_directional_count <- function(plot_dt) {
-  ggplot(plot_dt, aes(x = gene1, y = gene2, color = relevant_module, size = relevant_module)) +
-    geom_point(alpha = 0.7) +
-    scale_x_discrete(limits = gene_levels) +
-    scale_y_discrete(limits = rev(gene_levels)) +
-    scale_color_gradient(
-      low = "#EEEEEE",
-      high = "#663B8C",
-      name = "# of relevant modules"
-    ) +
-    scale_size_continuous(guide = "none") +
-    base_theme
-}
-
-significance_plot <- plot_directional_significance(processed_results)
-count_plot <- plot_directional_count(processed_results)
+count_plot <- ggplot(processed_results, aes(x = gene1, y = gene2, color = relevant_module, size = relevant_module)) +
+  geom_point(alpha = 0.7) +
+  scale_x_discrete(limits = gene_levels) +
+  scale_y_discrete(limits = gene_levels) +
+  scale_color_gradient(
+    low = "#EEEEEE",
+    high = "#663B8C",
+    name = "# of relevant modules"
+  ) +
+  scale_size_continuous(guide = "none") +
+  theme_minimal() +
+  labs(x = "Gene 1", y = "Gene 2") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 dir.create(file.path(work_directory, "paper_plots", "data"), recursive = TRUE)
 dir.create(file.path(work_directory, "yao_2023", "report"), recursive = TRUE)

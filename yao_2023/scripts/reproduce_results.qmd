@@ -81,6 +81,13 @@ source(file.path(code_directory, '91_overall_convergence_and_number_module.R'),
        local = TRUE)
 ```
 
+### Create the directional convergence plots for XConTest
+
+```{r}
+source(file.path(code_directory, '92_directional_convergence_and_count_matrix.R'),
+       local = TRUE)
+```
+
 ### Create the scLinker Plot by XConTest
 
 ```{r}
