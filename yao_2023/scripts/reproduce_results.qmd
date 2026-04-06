@@ -47,6 +47,16 @@ source(file.path(code_directory, '04_subsetting_perturbation.R'),
 ## Establishing the gene modules using `CSCORE`
 
 ```{r, eval = FALSE}
+library(CSCORE)
+library(WGCNA)
+library(dynamicTreeCut)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(parallel)
+library(corrplot)
+```
+
+```{r, eval = FALSE}
 source(file.path(code_directory, '31_establish_clustering.R'),
        local = TRUE)
 ```
