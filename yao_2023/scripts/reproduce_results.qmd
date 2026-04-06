@@ -58,6 +58,13 @@ source(file.path(code_directory, '32_GO_analysis.R'),
        local = TRUE)
 ```
 
+### Create the representative GO term table for selected modules
+
+```{r}
+source(file.path(code_directory, '33_GO_table.R'),
+       local = TRUE)
+```
+
 ## Results of XConTest
 
 ### Apply aggregated XConTest to all perturbations. Probably want to run this on a cluster.
