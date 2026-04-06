@@ -24,6 +24,15 @@ library(Seurat)
 library(patchwork)
 library(reshape2)
 
+#these are for gene clustering in 31_ and D1_
+library(CSCORE)
+library(WGCNA)
+library(dynamicTreeCut)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(parallel)
+library(corrplot)
+
 work_directory <- here::here()
 code_directory <- paste0(work_directory, '/yao_2023/code')
 code_directory |> print()
@@ -45,16 +54,6 @@ source(file.path(code_directory, '04_subsetting_perturbation.R'),
 ```
 
 ## Establishing the gene modules using `CSCORE`
-
-```{r, eval = FALSE}
-library(CSCORE)
-library(WGCNA)
-library(dynamicTreeCut)
-library(clusterProfiler)
-library(org.Hs.eg.db)
-library(parallel)
-library(corrplot)
-```
 
 ```{r, eval = FALSE}
 source(file.path(code_directory, '31_establish_clustering.R'),
@@ -166,5 +165,12 @@ source(file.path(code_directory, 'C2_scLinker_Dset.R'),
 
 ```{r, eval = FALSE}
 source(file.path(code_directory, 'C3_hist_LOEUF.R'),
+       local = TRUE)
+```
+
+## Establishing the gene modules using `CSCORE` for sensitivity analysis
+
+```{r, eval = FALSE}
+source(file.path(code_directory, 'D1_establish_clustering.R'),
        local = TRUE)
 ```
