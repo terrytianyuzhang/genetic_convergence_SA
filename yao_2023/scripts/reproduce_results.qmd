@@ -171,6 +171,9 @@ source(file.path(code_directory, 'C3_hist_LOEUF.R'),
 ## Establishing the gene modules using `CSCORE` for sensitivity analysis
 
 ```{r, eval = FALSE}
+work_directory_yao_2023 <- file.path(work_directory, "yao_2023")
 source(file.path(code_directory, 'D1_establish_clustering.R'),
+       local = TRUE)
+source(file.path(code_directory, 'D2_establish_clustering.R'),
        local = TRUE)
 ```
