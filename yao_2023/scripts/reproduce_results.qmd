@@ -6,6 +6,7 @@ editor: visual
 ---
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
+rm(list = ls())
 library(ggpubr)
 library(grid)
 library(ggnewscale)
@@ -23,6 +24,9 @@ library(dplyr)
 library(Seurat)
 library(patchwork)
 library(reshape2)
+library(tidyverse)
+library(grpreg)
+library(HMC)
 
 #these are for gene clustering in 31_ and D1_
 library(CSCORE)
@@ -168,12 +172,16 @@ source(file.path(code_directory, 'C3_hist_LOEUF.R'),
        local = TRUE)
 ```
 
-## Establishing the gene modules using `CSCORE` for sensitivity analysis
+## Change the gene modules  for sensitivity analysis
 
 ```{r, eval = FALSE}
+
 work_directory_yao_2023 <- file.path(work_directory, "yao_2023")
-source(file.path(code_directory, 'D1_establish_clustering.R'),
-       local = TRUE)
-source(file.path(code_directory, 'D2_establish_clustering.R'),
-       local = TRUE)
+# source(file.path(code_directory, 'D1_establish_clustering.R'),
+#        local = TRUE)
+# source(file.path(code_directory, 'D2_establish_clustering.R'),
+#        local = TRUE)
+source(file.path(code_directory, 'E1_truncate_gene_list.R'),
+        local = TRUE)
+system2("Rscript", file.path(code_directory, "E2_systematic_process_all_in_paper_cluster.R"))
 ```
