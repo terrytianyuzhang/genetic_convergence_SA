@@ -1,13 +1,12 @@
 library(glue)
 library(data.table)
-library(grpreg)
-library(HMC)
+library(glmnet)
 library(doParallel)
 library(foreach)
 library(here)
+library(HMC)
 
-work_directory <- here::here()
-source(file.path(work_directory, "R", "convergence.R"))
+work_directory <- '/raid6/Tianyu/genetic_convergence_SA/'
 
 residual_subset <- readRDS(file.path(
   work_directory,
@@ -36,7 +35,7 @@ control <- control[, match(clustering$gene_name, colnames(control)), with = FALS
 
 output_dir <- file.path(
   work_directory,
-  "yao_2023", "data", "intermediate_data", "F2_pairwise"
+  "yao_2023", "data", "intermediate_data", "G1_pairwise"
 )
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(
@@ -73,7 +72,7 @@ registerDoParallel(cl)
 all_treatment_names <- unique(residual_subset$Guides_collapsed_by_gene)
 all_treatment_names <- all_treatment_names[all_treatment_names != "non-targeting"]
 
-log_file <- file.path(work_directory, "yao_2023", "log", "F2_logs.txt")
+log_file <- file.path(work_directory, "yao_2023", "log", "G1_logs.txt")
 
 treatment_pairs <- expand.grid(
   treatment1 = all_treatment_names,
@@ -84,7 +83,7 @@ treatment_pairs <- treatment_pairs[treatment_pairs$treatment1 != treatment_pairs
 summary_results <- foreach(
   i = 1:nrow(treatment_pairs),
   .combine = rbind,
-  .packages = c("data.table", "glue", "grpreg", "HMC")
+  .packages = c("data.table", "glue", "glmnet")
 ) %dopar% {
   treatment1_name <- treatment_pairs$treatment1[i]
   treatment2_name <- treatment_pairs$treatment2[i]
@@ -105,10 +104,10 @@ summary_results <- foreach(
     process_data$treatment1,
     process_data$treatment2,
     pca_method = "dense_pca",
-    classifier_method = "group_lasso",
+    classifier_method = "lasso",
     lambda_type = "lambda.min",
     n_folds = 5,
-    group = clustering$cluster_index,
+    group = NULL,
     standardize_feature = FALSE,
     verbose = TRUE
   )
