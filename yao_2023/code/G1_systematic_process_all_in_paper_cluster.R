@@ -83,7 +83,7 @@ treatment_pairs <- treatment_pairs[treatment_pairs$treatment1 != treatment_pairs
 summary_results <- foreach(
   i = 1:nrow(treatment_pairs),
   .combine = rbind,
-  .packages = c("data.table", "glue", "glmnet")
+  .packages = c("data.table", "glue", "glmnet", "HMC")
 ) %dopar% {
   treatment1_name <- treatment_pairs$treatment1[i]
   treatment2_name <- treatment_pairs$treatment2[i]
