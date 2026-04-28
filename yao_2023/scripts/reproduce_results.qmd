@@ -174,10 +174,7 @@ source(file.path(code_directory, 'C3_hist_LOEUF.R'),
 
 ## Change the gene modules for sensitivity analysis
 
-As a sensitivity analysis, we restricted the feature set to genes from the
-immunity-relevant modules and reran XConTest using lasso rather than group
-lasso as the classifier. In this analysis, selected features are individual
-genes rather than gene modules.
+As a sensitivity analysis, we restricted the feature set to genes from the immunity-relevant modules and reran XConTest using lasso rather than group lasso as the classifier. In this analysis, selected features are individual genes rather than gene modules.
 
 ```{r, eval = FALSE}
 
@@ -190,4 +187,6 @@ source(file.path(code_directory, 'G2_process_results_cluster.R'),
         local = TRUE) # process lasso results at the gene level
 source(file.path(code_directory, 'G3_overall_convergence_and_number_module.R'),
         local = TRUE) # plot convergence and overlapping selected genes
+source(file.path(code_directory, 'G5_examine_important_pairs.R'),
+        local = TRUE) # it replicates the old results
 ```

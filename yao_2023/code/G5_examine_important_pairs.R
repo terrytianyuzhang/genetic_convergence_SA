@@ -1,10 +1,10 @@
-batch_name <- "F2_pairwise"
+batch_name <- "G1_pairwise"
 processed_results <- fread(file.path(
   work_directory,
-  "yao_2023", "data", "intermediate_data", batch_name, "F3_processed_results.csv"
+  "yao_2023", "data", "intermediate_data", batch_name, "G2_processed_results.csv"
 ))
 
-processed_results <- processed_results[, .(comparison, p_value, active_group)]
+processed_results <- processed_results[, .(comparison, p_value, active_genes)]
 processed_results[, c("gene1", "gene2") := tstrsplit(comparison, "_vs_")]
 
 merged_results <- merge(
@@ -27,7 +27,7 @@ merged_results |> filter(gene1 %in% c("STAT1", "STAT2", "TYK2") & gene2 %in% c("
 merged_results |> filter(gene1 %in% c("MYD88", "IRAK1", "IRAK4") & 
                          gene2 %in% c("MYD88", "IRAK1", "IRAK4"))
 
-merged_results |> filter(gene1 %in% c("IRAK1", "IRAK4", "IKBKB", "IKBKG") & 
-                           gene2 %in% c("IRAK1", "IRAK4", "IKBKB", "IKBKG")) |>
+merged_results |> filter(gene1 %in% c("IRAK1", "IRAK4", "IKBKB", "IKBKG", "RELA") & 
+                           gene2 %in% c("IRAK1", "IRAK4", "IKBKB", "IKBKG", "RELA")) |>
                   filter(is_significant == 2)
 
