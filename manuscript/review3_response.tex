@@ -1,0 +1,91 @@
+\documentclass[11pt]{article}
+\title{Review Response for ``Genetic Convergence Analysis of CRISPR Perturbations Deciphers Gene Functional Similarity''}
+\date{\vspace{-5ex}}
+\date{}  % Toggle commenting to test
+\usepackage{multirow} 
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+\usepackage{amsmath}
+\usepackage{amsthm,amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+\usepackage{hyperref}
+\hypersetup{
+  pdfinfo={
+  pdfproducer={},
+  Title={},
+  Subject={},
+  Author={},
+  }
+}
+\usepackage{abstract}
+\usepackage{verbatim}
+\usepackage{algorithm}
+\usepackage{cleveref}
+\usepackage{algpseudocode}
+\usepackage{amsmath,amssymb,bbm,amsthm,mathrsfs,bm}
+\usepackage{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\newtheorem{thm}{Theorem}
+\theoremstyle{definition}
+\usepackage{framed,xcolor}
+\usepackage[rightbars, xcolor]{changebar}
+
+%%% the following packages are for review_response_AoSR2.tex
+\usepackage{rotating}
+%%%%%%%
+
+\newcommand{\rev}[1]{\cbstart{\textcolor{teal}{#1}\cbend}}
+% \geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+% \renewcommand{\normalsize}{\fontsize{13pt}{\baselineskip}\selectfont}
+% \linespread{1.4}
+% \setlength{\parskip}{1em}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\var}{\texttt}
+\newcommand{\assign}{\leftarrow}
+\newcommand{\multilinestate}[1]{%
+  \parbox[t]{\linewidth}{\raggedright\hangindent=\algorithmicindent\hangafter=1
+    \strut#1\strut}}
+\newcommand{\vertiii}[1]{{\left\vert\kern-0.25ex\left\vert\kern-0.25ex\left\vert #1 
+    \right\vert\kern-0.25ex\right\vert\kern-0.25ex\right\vert}}
+% \usepackage{cleveref}
+\begin{document}
+\definecolor{shadecolor}{gray}{0.9}
+
+\maketitle
+\vspace{-10mm}
+% We thank the Editor, Associate Editor, and the Reviewers for their careful reading of the manuscript and their constructive feedback. The manuscript has been revised thoroughly in response to the comments. 
+
+% The main changes include:
+
+% We also attach a point-to-point response to all the comments. 
+\newcommand{\es}{\color{teal} ES:\ }
+\newcommand{\tz}{\color{blue} TZ:\ }
+\newcommand{\kr}{\color{magenta} KR:\ }
+
+
+\section{Reviewer 2's Comment}
+
+Thank you again for reviewing our manuscript.
+
+\begin{shaded}
+I apologize to the authors for how long it has taken to return the review. However, I am still really troubled by the simulation setup in this paper. The authors add the details of how they simulate data:
+
+``For the experiment presented in Figure 3, we first generated the non-targeting cell groups by
+sampling from a 1500-dimensional normal distribution. The entries are independent with
+marginal means of 10 and unit variances. Each value drawn from the normal distribution
+was rounded to the nearest integer and treated as a count. We fitted Poisson regression
+models to compute the log-fold change in Figure 3a."
+
+What confuses me is this in no way reflects real scRNA-seq data, which is neither 1500 dimensional nor iid Gaussian distributed with integer rounding. I should maybe let this point go but it is so obviously mis-specified I struggle to recommend acceptance for a paper that does this. We have had decent-enough simulators of scRNA-seq for almost a decade (e.g. \url{https://link.springer.com/article/10.1186/s13059-017-1305-0}). Even the authors earlier use a diffusion model to mimic real data. They argue against this because this section is ``more conceptual" for they ``simplify" it but I really struggle to see how this makes sense as a simulation setup.
+\end{shaded}
+
+
+\end{document}
