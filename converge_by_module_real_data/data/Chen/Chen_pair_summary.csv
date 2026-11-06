@@ -1,0 +1,16 @@
+"pert_1","pert_2","convergence","module_num"
+"A","B","Yes",3
+"A","C","No",0
+"A","D","Yes",4
+"A","E","Yes",2
+"A","F","No",0
+"B","C","Yes",1
+"B","D","Yes",2
+"B","E","Yes",2
+"B","F","No",0
+"C","D","No",0
+"C","E","Yes",2
+"C","F","No",0
+"D","E","Yes",1
+"D","F","No",0
+"E","F","No",0
