@@ -141,17 +141,17 @@ XConTest is a directional method. When the signal is abundant, the result is ins
 
 \subsection*{Aggregated XConTest Permits Gene-Module Level Convergence Analysis}\label{artificial-sim}
 
+   
 \begin{figure}[tbp]
     \centering
-    \includegraphics[width=\linewidth]{paper_plot/fig3.pdf}
+    \includegraphics[width=\linewidth]{paper_plot/06_normalized_convergence_figure.pdf}
     \caption{
     \begin{revblockr3}
     \textbf{Results of aggregated XConTest on simulation data with sparse signals.} For each colored gene module/program, 20\% of genes are perturbed, and the rest are the same as in the non-targeting group. \textbf{a.} Average log fold change of gene expression in each gene module. \textbf{b.} Testing results from aggregated XConTest. The upper half shows whether two perturbations are significantly convergent, and the lower half records the number of FSFs (i.e., detected gene modules). In Group A, Modules 1-5 are up-regulated by factors ranging from 1.3 to 1.5. In Group B, Modules 1-5 are down-regulated by factors ranging from 0.5 to 0.95. In Group C, Modules 6-10 are up-regulated by factors ranging from 1.3 to 1.5. In Group D, Modules 2, 3, and 5 are up-regulated by factors ranging from 1.2 to 1.5, while Modules 1 and 4 are down-regulated by factors 0.5 and 0.6. In Group E, Modules 2 and 3 are up-regulated by factor 1.4 and 1.45 while Modules 7 and 8 are down-regulated by factor 0.45 and 0.5. In Group F, Modules 12-16 are up-regulated by factors ranging from 1.3 to 1.5. Most interestingly, we make great effort to make Module 1 and 5 to be almost the same as the control group by imposing factor of 0.95 and XConTest successfully bypass this weak signal by testing the convergence between Group A and B, where only 3 modules in convergence is determined.
-    \end{revblockr3}
-    }
-        
-    \label{fig3}
+    \end{revblockr3}}   
+    \label{fig: real_data_module_simu}
 \end{figure}
+    
 
 %\textcolor{red}{Here is a paragraph of words from Ergan about the details of the new experiments.}
 
@@ -163,27 +163,27 @@ XConTest is a directional method. When the signal is abundant, the result is ins
 
 %The 1,500 genes were partitioned into 30 prespecified modules, and at most five modules were modified for each perturbation. Within each modified module, only approximately 20\% of genes had altered expression levels. Thus, even when two perturbations induce overlapping module-level changes, the specific genes affected within those modules need not coincide. We summarize the simulated perturbation effects using a module-level heatmap, a common visualization in the literature (for example, \cite{schnitzler2024convergence}). The color intensity represents the average log fold change of gene expression within each module (averaged first over samples and then over genes in each module).
 
-\begin{figure}[tbp]
-  \centering
-  \includegraphics[width=0.9\textwidth]{paper_plot/artificial_perturbation_intersect_low_sig_dilute_revise.pdf}
-  \caption{
-    \textbf{Results of aggregated XConTest on simulation data with sparse signals.} For each colored gene module/program, 20\% of genes are perturbed, and the rest are the same as in the non-targeting group. \textbf{a.} Average log fold change of gene expression in each gene module. \textbf{b.} Testing results from aggregated XConTest. The upper half shows whether two perturbations are significantly convergent, and the lower half records the number of FSFs (i.e., detected gene modules).
-  }
-  \label{fig:artificial}
+% \begin{figure}[tbp]
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{paper_plot/artificial_perturbation_intersect_low_sig_dilute_revise.pdf}
+%   \caption{
+%     \textbf{Results of aggregated XConTest on simulation data with sparse signals.} For each colored gene module/program, 20\% of genes are perturbed, and the rest are the same as in the non-targeting group. \textbf{a.} Average log fold change of gene expression in each gene module. \textbf{b.} Testing results from aggregated XConTest. The upper half shows whether two perturbations are significantly convergent, and the lower half records the number of FSFs (i.e., detected gene modules).
+%   }
+%   \label{fig: real_data_module_simu}
   
-\end{figure}
+% \end{figure}
 
 
 Measured genes in expression profiles can often be organized into functional modules. Distinct perturbations may affect the same module even when they alter different genes within that module. In this setting, convergence is more naturally defined at the module level rather than at the individual-gene level. To target this form of convergence, we replace the Lasso classifier in XConTest with a group Lasso classifier (Equation~\eqref{eq: group lasso}) so that it can perform module-level feature selection. We refer to the resulting procedure as aggregated XConTest. It identifies two perturbations as convergent when their modified gene modules overlap.
 
-We used a simulation to test whether aggregated XConTest can detect sparse perturbation effects. We generated expression profiles for 1,500 genes across six treatment groups and one control group (labeled A--F in \Cref{fig:artificial}a, after subtracting the control baseline). Each perturbed group contained $200$ cells, and the control group contained $400$. The 1,500 genes were partitioned into 30 prespecified modules, and at most five modules were modified for each perturbation. Within each modified module, only approximately 20\% of genes had altered expression levels. Thus, even when two perturbations induce overlapping module-level changes, the specific genes affected within those modules need not coincide. We summarize the simulated perturbation effects using a module-level heatmap, a common visualization in the literature (for example, \cite{schnitzler2024convergence}). The color intensity represents the average log fold change of gene expression within each module (averaged first over samples and then over genes in each module).
+We used a simulation to test whether aggregated XConTest can detect sparse perturbation effects. Based on the non-targting cell data in \cite{shi2026genome}, we created expression profiles for 1,500 genes across six treatment groups and one control group (labeled A--F in \Cref{fig: real_data_module_simu}a, after removing the control baseline). Each perturbed group contained $200$ cells, and the control group contained $400$. The 1,500 genes were partitioned into 30 prespecified modules, and at most five modules were modified for each perturbation. Within each modified module, only approximately 20\% of genes had altered expression levels. Thus, even when two perturbations induce overlapping module-level changes, the specific genes affected within those modules need not coincide. We summarize the simulated perturbation effects using a module-level heatmap, a common visualization in the literature (for example, \cite{schnitzler2024convergence}). The color intensity represents the average log fold change of gene expression within each module (averaged first over samples and then over genes in each module).
 
-We applied aggregated XConTest to the simulated datasets (\Cref{fig:artificial}b). The convergence results and the number of Frequently Selected Features (FSFs) are recorded. FSFs are the genes (simple XConTest) or gene modules (aggregated version) that contribute most to the convergence results. Specifically, we define FSFs as features selected in $>50\%$ of the cross-fitting folds. In this experiment, aggregated XConTest shows valid type-I error control. For example, F is not convergent with any other perturbation. Pairs with convergence signals are also successfully identified.
+We applied aggregated XConTest to the simulated datasets (\Cref{fig: real_data_module_simu}b). The convergence results and the number of Frequently Selected Features (FSFs) are recorded. FSFs are the genes (simple XConTest) or gene modules (aggregated version) that contribute most to the convergence results. Specifically, we define FSFs as features selected in $>50\%$ of the cross-fitting folds. In this experiment, aggregated XConTest shows valid type-I error control. For example, F is not convergent with any other perturbation. Pairs with convergence signals are also successfully identified.
 
-In practice, defining the gene modules is itself a separate modeling step. Modules can be specified using prior biological knowledge, estimated from gene-gene coexpression, or constructed from a combination of both sources. In this simulation, our goal is to assess whether aggregated XConTest can detect convergence when only a small fraction of genes within each module is affected by the perturbations. For this purpose, we provided the true module structure to XConTest to separate convergence testing from module construction. In the real-data analysis reported below, we implement the CS-CORE framework to establish gene modules, which is a reliable method for recovering interpretable modules under moderate signal strength.
+In practice, defining the gene modules is itself a separate modeling step. Modules can be specified using prior biological knowledge, estimated from gene-gene coexpression, or constructed from a combination of both sources. In this simulation, our goal is to assess whether aggregated XConTest can detect convergence when only a small fraction of genes within each module is affected by the perturbations. For this purpose, we provided the true module structure to XConTest to separate convergence testing from module construction. In the real-data analysis reported below, we implement the CS-CORE framework to establish gene modules, which is a reliable method for recovering interpretable modules under moderate signal strength. The Dset method was also applied to the same simulated data set (\Cref{Chen_revise_artificial_pert}).
 
-The Dset method was also applied to the same simulated data set, and a subtle but important distinction between the methods emerged. This distinction can be seen, for example, in the comparison between perturbations A and B (contrasting Figure \ref{fig:artificial}b and \Cref{Chen_revise_artificial_pert}). In our simulation setup, all of the first five modules were modified for perturbation B. However, modules 1 and 5 carry only weak signals, which appear as faint blue in \Cref{fig:artificial}a. The two methods report different numbers of FSFs for the A--B comparison.
-Dset detects all five modules (1--5) as convergent features. In contrast, XConTest reports only the three modules with substantial signal as its FSFs. This is expected because its sparsity-inducing classifiers exclude modules 1 and 5, which provide little additional predictive capacity once modules 2--4 are included. XConTest avoids reporting modules with weak signals. This behavior is advantageous in real Perturb-seq data, where weak and widespread transcriptional changes are common and may obscure the primary convergence pattern. This distinction is further demonstrated in our Perturb-seq example (\Cref{fig:yao_2023_main}).
+% , and a subtle but important distinction between the methods emerged. This distinction can be seen, for example, in the comparison between perturbations A and B (contrasting Figure \ref{fig: real_data_module_simu}b and \Cref{Chen_revise_artificial_pert}). In our simulation setup, all of the first five modules were modified for perturbation B. However, modules 1 and 5 carry only weak signals, which appear as faint blue in \Cref{fig: real_data_module_simu}a. The two methods report different numbers of FSFs for the A--B comparison.
+% Dset detects all five modules (1--5) as convergent features. In contrast, XConTest reports only the three modules with substantial signal as its FSFs. This is expected because its sparsity-inducing classifiers exclude modules 1 and 5, which provide little additional predictive capacity once modules 2--4 are included. XConTest avoids reporting modules with weak signals. This behavior is advantageous in real Perturb-seq data, where weak and widespread transcriptional changes are common and may obscure the primary convergence pattern. This distinction is further demonstrated in our Perturb-seq example (\Cref{fig:yao_2023_main}).
 
 
 \subsection*{Application: CRISPRi Data from a Neuronal Differentiation Study}
@@ -284,7 +284,7 @@ Overall, these results show that convergence analysis can complement GWAS-based 
 
 \section*{Discussion}
 
-Characterizing gene function in human cells has long been a central goal of genomics and systems biology, yet the functions of a substantial proportion of genes remain poorly understood \citep{stoeger2018large}. Recent advances in pooled CRISPR-based perturbation screens with molecular readouts now enable systematic inference of causal gene-regulatory networks. By integrating and iteratively refining insights from such perturbation studies, it is becoming increasingly feasible to delineate causal relationships among genes at scale \citep{rood2024toward}. With XConTest, we address a key aspect of this endeavor---the identification of CRISPR perturbations that exert convergent effects on gene regulation, that is, perturbations influencing a shared set of downstream targets. Unlike heuristic strategies that assess DE heatmaps, such as \Cref{fig:artificial}a, XConTest provides a rigorous statistical framework to quantify functional convergence.
+Characterizing gene function in human cells has long been a central goal of genomics and systems biology, yet the functions of a substantial proportion of genes remain poorly understood \citep{stoeger2018large}. Recent advances in pooled CRISPR-based perturbation screens with molecular readouts now enable systematic inference of causal gene-regulatory networks. By integrating and iteratively refining insights from such perturbation studies, it is becoming increasingly feasible to delineate causal relationships among genes at scale \citep{rood2024toward}. With XConTest, we address a key aspect of this endeavor---the identification of CRISPR perturbations that exert convergent effects on gene regulation, that is, perturbations influencing a shared set of downstream targets. Unlike heuristic strategies that assess DE heatmaps, such as \Cref{fig: real_data_module_simu}a, XConTest provides a rigorous statistical framework to quantify functional convergence.
 
 For comparison, we illustrate Dset, our formalization of a common DE-based analysis strategy. Dset provides a sensitive but potentially overinclusive means of detecting shared functional outcomes, even when the patterns of perturbation effects differ substantially. In contrast, our XConTest framework employs a sparsity-inducing group Lasso formulation that downweights weak effects across modules. This structure encourages cross-module comparability, such that only perturbations with consistently strong signals are propagated to subsequent inference steps. Consequently, convergence is declared only when strong effects align across perturbations, yielding a conservative yet biologically meaningful measure of functional similarity.
 
@@ -404,7 +404,7 @@ Let $N$ denote the number of perturbations under comparison. And let $M$ be the 
     \end{aligned}
 \end{equation*}
 
-To control the family-wise type-I error at level $\alpha$, we need to set the significance level of each DE test at no larger than $\alpha\binom{N}{2}^{-1} M^{-1}$. In the artificial perturbation setting (\Cref{fig:artificial}), $M=30$, $N=6$.
+To control the family-wise type-I error at level $\alpha$, we need to set the significance level of each DE test at no larger than $\alpha\binom{N}{2}^{-1} M^{-1}$. In the artificial perturbation setting (\Cref{fig: real_data_module_simu}), $M=30$, $N=6$.
 
 \subsection*{Simulating data via diffusion models}
 
@@ -436,13 +436,15 @@ When the number of perturbation pairs is large, as in the case study in \cite{ya
 \subsection*{Simulation with perturbed gene modules}
 
 \begin{revblockr3}
-To provide a realistic example of XConTest in action we utilized actual perturb-seq data.  Specifically, we sampled data from a published experiment involving in vivo perturbations in mouse brain  \cite{shi2026genome}. This dataset contains many different brain cell types and more than 1000 perturbations.  For illustration we utilize the nontargeting cells in the thalamic glutamatergic neurons (Prkcd Grin2c Glut neuron).  As a general pipeline of preprocessing, we selected the first 1,500 genes with the highest total expression level for our experiment. Then, we randomly sampled (without replacement) $400+200\times6=1600$ cells from all non-targeting cells  and divide them into one control group (containing 400 cells) and 6 treatment groups with each containing 200 cells, labeled A-F in \Cref{fig3}a.   The 1,500 genes were partitioned into 30 prespecified modules, and at most five modules were modified for each perturbation. Within each modified module, the expression levels of approximately 20\% of the genes were modified in the perturbed cells. Thus, even when two perturbations induce overlapping module-level changes, the specific genes affected within those modules need not coincide. We summarize the simulated perturbation effects using a module-level heatmap, a common visualization in the literature (for example, \cite{schnitzler2024convergence}). The color intensity represents the average log fold change of gene expression within each module (averaged first over samples and then over genes in each module).
+We utilized real perturb-seq data to simulate the data for this experiment.  The data are from a published study involving in vivo perturbations in mouse brain \cite{shi2026genome}. This dataset contains many different brain cell types and more than 1,000 perturbations. We chose the nontargeting cells in the thalamic glutamatergic neurons (labeled as Prkcd Grin2c Glut) for the current study.
+
+Our numerical experiment induces signals (i.e., mean shifts) among the top 1,500 expressed genes. Then, we randomly sampled (without replacement) $400+200\times6=1600$ cells from all non-targeting cells and divided them into one control group (containing 400 cells) and 6 treatment groups (200 cells each); they were labeled A-F in \Cref{fig: real_data_module_simu}a.
 \end{revblockr3}
 
 %\begin{revblockr2}
-%For the experiment presented in \Cref{fig:artificial}, we first generated the non-targeting cell groups by sampling from a 1500-dimensional normal distribution. The entries are independent with marginal means of 10 and unit variances. Each value drawn from the normal distribution was rounded to the nearest integer and treated as a count. We fitted Poisson regression models to compute the log-fold change in \Cref{fig:artificial}a.
+%For the experiment presented in \Cref{fig: real_data_module_simu}, we first generated the non-targeting cell groups by sampling from a 1500-dimensional normal distribution. The entries are independent with marginal means of 10 and unit variances. Each value drawn from the normal distribution was rounded to the nearest integer and treated as a count. We fitted Poisson regression models to compute the log-fold change in \Cref{fig: real_data_module_simu}a.
 
-%To generate cells for perturbation groups A to F, we modified different gene modules, each consisting of 30 consecutive genes. To reflect the biological assumption that a single perturbation influences only a limited number of genes, we restricted perturbations to 20\% of the genes in each module. Perturbed cells were also drawn independently from normal distributions with different mean values, ranging from 4.5 to 15, and each value was rounded to the nearest integer. Mean values higher than the baseline represent up-regulated perturbation effects, while those lower than the baseline represent down-regulated perturbation effects. The convergence results of XConTest for this experiment are presented in \Cref{fig:artificial}b.
+%To generate cells for perturbation groups A to F, we modified different gene modules, each consisting of 30 consecutive genes. To reflect the biological assumption that a single perturbation influences only a limited number of genes, we restricted perturbations to 20\% of the genes in each module. Perturbed cells were also drawn independently from normal distributions with different mean values, ranging from 4.5 to 15, and each value was rounded to the nearest integer. Mean values higher than the baseline represent up-regulated perturbation effects, while those lower than the baseline represent down-regulated perturbation effects. The convergence results of XConTest for this experiment are presented in \Cref{fig: real_data_module_simu}b.
 %\end{revblockr2}
 
 \section*{Supplementary Materials}
@@ -493,7 +495,7 @@ This PDF includes supplementary figures and tables of the submitted manuscript.
 
 \begin{figure}[tbp]
     \centering    \includegraphics[width=0.6\linewidth]{paper_plot/Chen_revise.pdf}
-    \caption{\textbf{Results of Dset on simulation data with perturbed gene modules.} The discovery is very to similar to that reported by XConTest in \Cref{fig:artificial}b.} \label{Chen_revise_artificial_pert}
+    \caption{\textbf{Results of Dset on simulation data with perturbed gene modules.} This result is comparable to the discovery of XConTest in \Cref{fig: real_data_module_simu}b.} \label{Chen_revise_artificial_pert}
 \end{figure}
 
 \newpage
