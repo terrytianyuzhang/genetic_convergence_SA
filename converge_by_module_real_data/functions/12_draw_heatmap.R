@@ -1,10 +1,14 @@
 rm(list = ls())
 
+# INPUT
 data_path <- file.path('..', 'data', 'raw')
-plot_path <- file.path('..', 'figures', 'splatter_pilot')
 data_file <- file.path(data_path, '10_splatter_pilot_60_120.Rdata')
-module_log2fc_file <- file.path(data_path, '12_module_mean_log2fc.csv')
+# OUTPUT
+result_path <- file.path('..', 'data', 'final', '12_heatmap')
+plot_path <- file.path('..', 'figures', '12_splatter_pilot')
+module_log2fc_file <- file.path(result_path, '12_module_mean_log2fc.csv')
 heatmap_file <- file.path(plot_path, '12_splatter_pilot_module_heatmap.pdf')
+dir.create(result_path, recursive = TRUE, showWarnings = FALSE)
 dir.create(plot_path, recursive = TRUE, showWarnings = FALSE)
 load(data_file)
 

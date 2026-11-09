@@ -1,17 +1,22 @@
 rm(list = ls())
 
+# INPUT
 data_path <- file.path('..', 'data', 'raw')
-result_path <- file.path('..', 'data', 'final', '11_pairwise_convergence')
-plot_path <- file.path('..', 'figures', '13_splatter_pilot')
 data_file <- file.path(data_path, '10_splatter_pilot_60_120.Rdata')
-result_one_file <- file.path(result_path, '11_A_B_one.Rdata')
-result_two_file <- file.path(result_path, '11_A_B_two.Rdata')
-module_log2fc_file <- file.path(data_path, '12_module_mean_log2fc.csv')
+convergence_path <- file.path('..', 'data', 'final', '11_pairwise_convergence')
+result_one_file <- file.path(convergence_path, '11_A_B_one.Rdata')
+result_two_file <- file.path(convergence_path, '11_A_B_two.Rdata')
+heatmap_path <- file.path('..', 'data', 'final', '12_heatmap')
+module_log2fc_file <- file.path(heatmap_path, '12_module_mean_log2fc.csv')
+# OUTPUT
+result_path <- file.path('..', 'data', 'final', '13_heatmap_convergence')
+plot_path <- file.path('..', 'figures', '13_splatter_pilot')
 pair_summary_file <- file.path(result_path, '13_convergence_pair_summary.csv')
 combined_files <- c(
   union = file.path(plot_path, '13_splatter_pilot_combined_union.pdf'),
   intersect = file.path(plot_path, '13_splatter_pilot_combined_intersect.pdf')
 )
+dir.create(result_path, recursive = TRUE, showWarnings = FALSE)
 dir.create(plot_path, recursive = TRUE, showWarnings = FALSE)
 load(data_file)
 current_input_md5 <- unname(tools::md5sum(data_file))
