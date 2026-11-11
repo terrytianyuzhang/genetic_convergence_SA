@@ -5,15 +5,17 @@ data_path <- file.path('..', 'data', 'raw')
 data_file <- file.path(data_path, '10_splatter_pilot_60_120.Rdata')
 # OUTPUT
 result_path <- file.path('..', 'data', 'final', '12_heatmap')
-plot_path <- file.path('..', 'figures', '12_splatter_pilot')
 module_log2fc_file <- file.path(result_path, '12_module_mean_log2fc.csv')
+
+plot_path <- file.path('..', 'figures', '12_splatter_pilot')
 heatmap_file <- file.path(plot_path, '12_splatter_pilot_module_heatmap.pdf')
 dir.create(result_path, recursive = TRUE, showWarnings = FALSE)
 dir.create(plot_path, recursive = TRUE, showWarnings = FALSE)
-load(data_file)
+
 
 ############################ Plot observed module log2 fold changes ###########
 # A 0.5 pseudocount keeps the display finite when a gene is all zero in a group.
+load(data_file)
 pert <- c('A', 'B')
 n_modules <- length(unique(sim$gene_info$module))
 control_mean <- colMeans(sim$control)
