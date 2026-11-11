@@ -2,17 +2,17 @@
 rm(list = ls())
 
 data_path <- file.path('..', 'data', 'raw')
-data_file <- file.path(data_path, '10_splatter_pilot_60_120.Rdata')
+data_file <- file.path(data_path, '10_splatter_data.Rdata')
 effect_design_file <- file.path(data_path, '10_effect_design.csv')
 dir.create(data_path, recursive = TRUE, showWarnings = FALSE)
 
-pert <- c('A', 'B')
+pert <- c('A', 'B', 'C', 'D')
 n_samples <- 60
 n_control <- 120
-n_modules <- 6
+n_modules <- 20
 module_sz <- 50
 n_features <- n_modules * module_sz
-n_signal <- 15  # 30% of genes in each modified module.
+n_signal <- 10  # 20% of genes in each modified module.
 
 ############################ Simulate baseline raw counts #####################
 sce <- splatSimulate(nGenes = n_features,
@@ -25,19 +25,22 @@ group_labels <- c(rep(pert, each = n_samples),
 
 ############################ Define sparse module effects #####################
 module_fold_change <- list(
-  A = c(1.80, 0.65, 1, 1, 1, 1),
-  B = c(0.55, 1, 1.60, 1, 1, 1)
+  A = c(1.4, 1.5, 1.45, 1.4, 1.3, rep(1, n_modules - 5)),
+  B = c(0.95, 0.5, 0.45, 0.55, 0.95, rep(1, n_modules - 5)),
+  C = c(rep(1, 5), 1.4, 1.5, 1.45, 1.4, 1.3, rep(1, n_modules - 10)),
+  D = c(0.5, 1.2, 1.5, 0.6, 1.45, rep(1, n_modules - 5))
 )
-set.seed(20261110)
-signal_positions <- lapply(seq_len(n_modules), function(module)
-  sample(seq_len(module_sz), n_signal))
+set.seed(20261111)
+signal_positions <- lapply(setNames(pert, pert), function(group)
+  lapply(seq_len(n_modules), function(module)
+    sample(seq_len(module_sz), n_signal)))
 
 fold_change <- list()
 for (group in pert) {
   multiplier <- rep(1, n_features)
   for (module in seq_len(n_modules)) {
     if (module_fold_change[[group]][module] == 1) next
-    genes <- (module - 1) * module_sz + signal_positions[[module]]
+    genes <- (module - 1) * module_sz + signal_positions[[group]][[module]]
     multiplier[genes] <- module_fold_change[[group]][module]
   }
   names(multiplier) <- colnames(original_counts)

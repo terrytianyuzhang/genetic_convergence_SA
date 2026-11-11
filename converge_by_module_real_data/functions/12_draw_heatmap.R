@@ -2,7 +2,7 @@ rm(list = ls())
 
 # INPUT
 data_path <- file.path('..', 'data', 'raw')
-data_file <- file.path(data_path, '10_splatter_pilot_60_120.Rdata')
+data_file <- file.path(data_path, '10_splatter_data.Rdata')
 # OUTPUT
 result_path <- file.path('..', 'data', 'final', '12_heatmap')
 module_log2fc_file <- file.path(result_path, '12_module_mean_log2fc.csv')
@@ -14,10 +14,14 @@ dir.create(plot_path, recursive = TRUE, showWarnings = FALSE)
 
 
 ############################ Plot observed module log2 fold changes ###########
-# A 0.5 pseudocount keeps the display finite when a gene is all zero in a group.
+# Match 06: remove the group library-size offset measured before perturbation.
 load(data_file)
-pert <- c('A', 'B')
+pert <- names(sim$treatment)
 n_modules <- length(unique(sim$gene_info$module))
+original_library_size <- rowSums(sim$original_counts)
+stopifnot(all(original_library_size > 0))
+mean_library_size <- tapply(original_library_size, sim$cell_info$group, mean)
+library_offset <- log2(mean_library_size[pert] / mean_library_size['NT'])
 control_mean <- colMeans(sim$control)
 module_mat <- matrix(0, length(pert), n_modules,
   dimnames = list(pert, as.character(seq_len(n_modules))))
@@ -26,7 +30,7 @@ for (group in pert) {
                      (control_mean + 0.5))
   for (module in seq_len(n_modules)) {
     genes <- which(sim$gene_info$module == module)
-    module_mat[group, module] <- mean(gene_log2fc[genes])
+    module_mat[group, module] <- mean(gene_log2fc[genes]) - library_offset[group]
   }
 }
 write.csv(module_mat, module_log2fc_file)
@@ -38,5 +42,10 @@ p_heatmap <- ggplot(module_data,
   scale_fill_gradient2(low = '#013e75', mid = '#FAFAFA', high = '#f5b70a',
     midpoint = 0) +
   labs(x = 'Gene module', y = 'Perturbation', fill = 'log2FC') +
-  theme_minimal() + theme(panel.grid = element_blank())
-ggsave(heatmap_file, p_heatmap, width = 5.5, height = 2.8)
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+    panel.grid = element_blank(), legend.position = 'top') +
+  guides(fill = guide_colorbar(direction = 'horizontal',
+    title.position = 'top', title.hjust = 0.5,
+    barwidth = 20, barheight = 0.5))
+ggsave(heatmap_file, p_heatmap, width = 9, height = 4)
