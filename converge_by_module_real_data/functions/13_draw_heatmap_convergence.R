@@ -99,14 +99,20 @@ for (count_method in c('union', 'intersect')) {
 
   p_convergence <- ggplot() +
     geom_point(data = df_upper,
-      aes(x = pert_1, y = pert_2, color = Convergent), size = 8) +
-    scale_color_manual(name = 'Convergence', drop = FALSE,
+      aes(x = pert_1, y = pert_2, color = Convergent, shape = Convergent),
+      size = 8) +
+    scale_color_manual(name = 'Convergence',
+      breaks = c('Adj.p<0.05', 'p>0.05'),
       values = c('Adj.p<0.05' = '#f5b70a', 'p>0.05' = '#EEEEEE',
         'p<0.05' = '#013e75')) +
+    scale_shape_manual(name = 'Convergence',
+      breaks = c('Adj.p<0.05', 'p>0.05'),
+      values = c('Adj.p<0.05' = 16, 'p>0.05' = 1, 'p<0.05' = 16)) +
     geom_point(data = df_lower,
       aes(x = pert_1, y = pert_2, size = module_num),
       alpha = 0.7, shape = 16, color = '#663B8C') +
-    scale_size_continuous(name = 'Module Number', range = c(0, 10)) +
+    scale_size_continuous(name = 'Module Number', range = c(0, 10),
+      breaks = function(x) unique(round(pretty(x, n = 4)))) +
     scale_x_discrete(limits = pert) +
     scale_y_discrete(limits = pert) +
     coord_fixed(ratio = 1) +

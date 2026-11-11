@@ -15,13 +15,24 @@ n_features <- n_modules * module_sz
 n_signal <- 10  # 20% of genes in each modified module.
 
 ############################ Simulate baseline raw counts #####################
-sce <- splatSimulate(nGenes = n_features,
+sce <- splatSimulate(nGenes = n_features + 200,
   batchCells = n_control + length(pert) * n_samples,
   seed = 20261109, sparsify = FALSE, verbose = FALSE)
 original_counts <- t(counts(sce))
 
 group_labels <- c(rep(pert, each = n_samples),
                   rep('NT', n_control))
+
+# Keep 1000 genes that vary in every control-plus-two-treatment comparison.
+pair_groups <- combn(pert, 2, simplify = FALSE)
+variable_genes <- vapply(seq_len(ncol(original_counts)), function(gene) {
+  all(vapply(pair_groups, function(pair)
+    sd(original_counts[group_labels %in% c('NT', pair), gene]) > 0,
+    logical(1)))
+}, logical(1))
+stopifnot(sum(variable_genes) >= n_features)
+original_counts <- original_counts[, which(variable_genes)[seq_len(n_features)],
+  drop = FALSE]
 
 ############################ Define sparse module effects #####################
 module_fold_change <- list(
